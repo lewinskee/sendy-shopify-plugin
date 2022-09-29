@@ -1,15 +1,16 @@
 # Sendy Fulfillment Shopify Plugin
 
 Contributors: Evanson, Lewis , Dervine
+
 Tags: Shopify, ECommerce, Consignment, Delivery, Sendy , Fulfillment
-Requires PHP: 7.3.29
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
 ## Introduction
 
 **_(on Wordpress Plugins Store & API documentation)_**
 
-This Shopfy extension uses the Sendy Fulfilment API to allow you to automate the processes of consigning and delivering with Sendy Fulfilment.
+This Shopify extension uses the Sendy Fulfilment API to allow you to automate the processes of consigning and delivering with Sendy Fulfilment.
 
 ## Features
 
