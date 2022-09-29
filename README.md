@@ -1,43 +1,44 @@
-# Shopify App Node
+# Sendy Fulfillment Shopify Plugin
 
+Contributors: Evanson, Lewis , Dervine
+Tags: Shopify, ECommerce, Consignment, Delivery, Sendy , Fulfillment
+Requires PHP: 7.3.29
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE.md)
 
-This is a sample app to help developers bootstrap their Shopify app development.
+## Introduction
 
-It leverages the [Shopify API Library](https://github.com/Shopify/shopify-node-api) on the backend to create [an embedded app](https://shopify.dev/apps/tools/app-bridge/getting-started#embed-your-app-in-the-shopify-admin), and [Polaris](https://github.com/Shopify/polaris-react) and [App Bridge React](https://shopify.dev/tools/app-bridge/react-components) on the frontend.
+**_(on Wordpress Plugins Store & API documentation)_**
 
-This is the repository used when you create a new Node app with the [Shopify CLI](https://shopify.dev/apps/tools/cli).
+This Shopfy extension uses the Sendy Fulfilment API to allow you to automate the processes of consigning and delivering with Sendy Fulfilment.
 
-## Requirements
+## Features
 
-- If you don’t have one, [create a Shopify partner account](https://partners.shopify.com/signup).
-- If you don’t have one, [create a Development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) where you can install and test your app.
-- **If you are not using the Shopify CLI**, in the Partner dashboard, [create a new app](https://help.shopify.com/en/api/tools/partner-dashboard/your-apps#create-a-new-app). You’ll need this app’s API credentials during the setup process.
+- **Collect geolocation**: this extension adds a geolocation field to your checkout page that uses the google address autocomplete API to collect geolocation info from your customers.
+- **Request deliveries**: when your buyer completes a checkout on your site, the extension will automatically create a delivery request on the Sendy fulfilment app with the buyer and the product information. You will also get an email alert confirming that the order has been created on the Sendy Fulfilment app.
+- **Track deliveries**: this extension will create a track delivery button on your order confirmation page which will allow your buyers to open and track the order in realtime.
+- **Manage inventory**: feature will allow you to sync your product inventory between your woocommerce store and the Sendy Fulfilment app.
 
 ## Installation
 
-Using the [Shopify CLI](https://github.com/Shopify/shopify-cli) run:
+### Minimum requirements
 
-```sh
-shopify app create node -n APP_NAME
-```
+- Shopify 2.25
 
-Or, you can run `npx degit shopify/shopify-app-node` and create a `.env` file containing the following values:
+### Other prerequisites:
 
-```yaml
-SHOPIFY_API_KEY={api key}           # Your API key
-SHOPIFY_API_SECRET={api secret key} # Your API secret key
-SCOPES={scopes}                     # Your app's required scopes, comma-separated
-HOST={your app's host}              # Your app's host, without the protocol prefix
-```
+- You need to have a Sendy Fulfilment account. If you don’t have one, you can sign-up [here](https://fulfillment.sendyit.com/auth/sign-up)
+- A Sendy Fulfilment API key.
+- The API key is a unique identifier for your business, you can get one by sending an email to merchantapi@sendyit.com
 
-## Developer resources
+Once you’ve installed the plugin, open the Sendy Fulfilment app to ensure the products are synced and then consign your items to the Sendy fulfilment centres
 
-- [Introduction to Shopify apps](https://shopify.dev/apps/getting-started)
-  - [App authentication](https://shopify.dev/apps/auth)
-- [Shopify CLI command reference](https://shopify.dev/apps/tools/cli/app)
-- [Shopify API Library documentation](https://github.com/Shopify/shopify-node-api/tree/main/docs)
+## Automatic Installation (Work in progress, currently not available)
 
-## License
+- Search for “Sendy Fulfilment" from your Shopify app section, Click on the plugin and install
+- After installation has finished, click the ‘activate plugin’ link.
 
-This repository is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+## Development
+
+### Changelog
+
+**1.0.0**
