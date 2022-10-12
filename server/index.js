@@ -1,8 +1,11 @@
 // @ts-check
 import { resolve } from "path";
 import express from "express";
+import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import { Shopify, LATEST_API_VERSION } from "@shopify/shopify-api";
+import { Metafield } from "@shopify/shopify-api/dist/rest-resources/2022-07/index.js";
+import axios from "axios";
 import "dotenv/config";
 
 import applyAuthMiddleware from "./middleware/auth.js";
@@ -46,6 +49,9 @@ export async function createServer(
   app.set("use-online-tokens", USE_ONLINE_TOKENS);
 
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(bodyParser.json());
+  app.use(bodyParser.raw());
 
   applyAuthMiddleware(app);
 
@@ -59,6 +65,118 @@ export async function createServer(
         res.status(500).send(error.message);
       }
     }
+  });
+
+  app.get("/shop", verifyRequest(app), async (req, res) => {
+    const session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
+    );
+    const client = new Shopify.Clients.Rest(session.shop, session.accessToken);
+    const response = await client.get({ path: "shop" });
+    res.status(200).send(response);
+  });
+
+  app.get("/get-metafields", verifyRequest(app), async (req, res) => {
+    const test_session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
+    );
+    const response = await Metafield.all({
+      session: test_session,
+    });
+    res.status(200).send(response);
+  });
+
+  app.post("/create-metafields", verifyRequest(app), async (req, res) => {
+    const shop = process.env.SHOP;
+    const session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
+    );
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": session.accessToken,
+      },
+    };
+    const payload = {
+      metafield: req.body,
+    };
+    axios
+      .post(
+        `https://${shop}/admin/api/${LATEST_API_VERSION}/metafields.json`,
+        payload,
+        config
+      )
+      .then(function (response) {
+        const { data } = response;
+        res.status(200).send(data);
+      })
+      .catch(function (error) {
+        res.status(400).send(error);
+      });
+  });
+
+  app.post("/update-metafields", verifyRequest(app), async (req, res) => {
+    const shop = process.env.SHOP;
+    const session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
+    );
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": session.accessToken,
+      },
+    };
+    const payload = {
+      metafield: req.body,
+    };
+    axios
+      .put(
+        `https://${shop}/admin/api/${LATEST_API_VERSION}/metafields/${req.body.id}.json`,
+        payload,
+        config
+      )
+      .then(function (response) {
+        const { data } = response;
+        res.status(200).send(data);
+      })
+      .catch(function (error) {
+        res.status(400).send(error);
+      });
+  });
+
+  app.post("/delete-metafields", verifyRequest(app), async (req, res) => {
+    const shop = process.env.SHOP;
+    const session = await Shopify.Utils.loadCurrentSession(
+      req,
+      res,
+      app.get("use-online-tokens")
+    );
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": session.accessToken,
+      },
+    };
+    axios
+      .delete(
+        `https://${shop}/admin/api/${LATEST_API_VERSION}/metafields/${req.body.id}.json`,
+        config
+      )
+      .then(function (response) {
+        const { data } = response;
+        res.status(200).send(data);
+      })
+      .catch(function (error) {
+        res.status(400).send(error);
+      });
   });
 
   app.get("/products-count", verifyRequest(app), async (req, res) => {
