@@ -1,4 +1,4 @@
-#Shopify Plugin
+## Shopify Plugin
 
 Contributors: Lewis
 
